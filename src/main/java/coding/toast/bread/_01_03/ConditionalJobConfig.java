@@ -1,17 +1,19 @@
 package coding.toast.bread._01_03;
 
 import coding.toast.bread._01.incrementer.DailyJobTimeStamper;
+import coding.toast.bread._01_03.decider.RandomDecider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.flow.JobExecutionDecider;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+// @Configuration
 @RequiredArgsConstructor
 public class ConditionalJobConfig {
 	
@@ -21,8 +23,8 @@ public class ConditionalJobConfig {
 	@Bean
 	public Tasklet passTasklet() {
 		return (contribution, chunkContext) -> {
-			return RepeatStatus.FINISHED;
-			// throw new RuntimeException("This is a failure");
+			// return RepeatStatus.FINISHED;
+			throw new RuntimeException("This is a failure");
 		};
 	}
 	
@@ -44,10 +46,30 @@ public class ConditionalJobConfig {
 	
 	@Bean
 	public Job job() {
-		return this.jobBuilderFactory.get("conditionalJob2")
+		return this.jobBuilderFactory.get("conditionalJob3")
+			// .incrementer(new DailyJobTimeStamper())
 			.start(firstStep())
-			.incrementer(new DailyJobTimeStamper())
+			// .next(decider())
+			// .from(decider())
+			// .on("FAILED").to(failureStep())
+			// .from(decider())
+			// .on("*").to(successStep())
+			// .end()
+			
+			// .on("FAILED").fail()
+			// .from(firstStep()).on("*").to(successStep())
+			// .end()
+			
+			.on("FAILED").stopAndRestart(successStep())
+			.from(firstStep())
+			.on("*").to(successStep())
+			.end()
 			.build();
+	}
+	
+	@Bean
+	public JobExecutionDecider decider() {
+		return new RandomDecider();
 	}
 	
 	@Bean
@@ -70,5 +92,6 @@ public class ConditionalJobConfig {
 			.tasklet(failTasklet())
 			.build();
 	}
+	
 	
 }
