@@ -1,7 +1,6 @@
-package coding.toast.bread._01_03;
+package coding.toast.bread._01._01_03;
 
-import coding.toast.bread._01.incrementer.DailyJobTimeStamper;
-import coding.toast.bread._01_03.decider.RandomDecider;
+import coding.toast.bread._01._01_00.incrementer.DailyJobTimeStamper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -9,7 +8,6 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.job.builder.FlowBuilder;
 import org.springframework.batch.core.job.flow.Flow;
-import org.springframework.batch.core.job.flow.JobExecutionDecider;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;

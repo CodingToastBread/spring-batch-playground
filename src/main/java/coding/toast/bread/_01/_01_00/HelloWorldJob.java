@@ -1,12 +1,11 @@
-package coding.toast.bread._01;
+package coding.toast.bread._01._01_00;
 
-import coding.toast.bread._01.incrementer.DailyJobTimeStamper;
-import coding.toast.bread._01.listener.JobLoggerListenerBeanStyle;
-import coding.toast.bread._01.validator.ParameterValidator;
+import coding.toast.bread._01._01_00.incrementer.DailyJobTimeStamper;
+import coding.toast.bread._01._01_00.listener.JobLoggerListenerBeanStyle;
+import coding.toast.bread._01._01_00.validator.ParameterValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
@@ -15,13 +14,11 @@ import org.springframework.batch.core.job.CompositeJobParametersValidator;
 import org.springframework.batch.core.job.DefaultJobParametersValidator;
 import org.springframework.batch.core.listener.ExecutionContextPromotionListener;
 import org.springframework.batch.core.listener.JobListenerFactoryBean;
-import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
