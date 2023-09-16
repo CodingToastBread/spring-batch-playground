@@ -6,6 +6,7 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.JobRepositoryFactoryBean;
 import org.springframework.batch.support.DatabaseType;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.batch.BatchDataSource;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -19,8 +20,8 @@ public class CustomBatchConfigurer extends DefaultBatchConfigurer {
     private final DataSource dataSource;
     private final PlatformTransactionManager txManager;
 
-    public CustomBatchConfigurer(@Qualifier("repositoryDataSource") DataSource dataSource,
-                                 @Qualifier("repositoryDataSourceTx") PlatformTransactionManager txManager) {
+    public CustomBatchConfigurer(@Qualifier("batchDataSource") /*@BatchDataSource*/ DataSource dataSource,
+                                 @Qualifier("batchProjectMetaDataTxManager") PlatformTransactionManager txManager) {
         this.dataSource = dataSource;
         this.txManager = txManager;
     }
@@ -34,5 +35,22 @@ public class CustomBatchConfigurer extends DefaultBatchConfigurer {
         factory.setTransactionManager(this.txManager);
         factory.afterPropertiesSet();
         return factory.getObject();
+    }
+    
+    /**
+     * super class 에서 setDataSource 가 Autowired 로 되어 있어서,
+     * 본의 아니게 Primary DataSource 를 씁니다. 이를 방지하기 위해서 어쩔 수 없이 Override 를 하고,
+     * 이를 통해서 DefaultBatchConfigurer 가 자동으로 Primary DataSource 를 DI 받지 않도록 합니다.
+     * 이렇게 해야 정상적으로 동작합니다.
+     * @param dataSource The data source to use
+     */
+    @Override
+    public void setDataSource(DataSource dataSource) {
+        /* no-op */
+    }
+    
+    @Override
+    public PlatformTransactionManager getTransactionManager() {
+        return this.txManager;
     }
 }
