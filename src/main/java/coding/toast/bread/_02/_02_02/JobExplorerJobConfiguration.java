@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Random;
 
-@Configuration
+// @Configuration
 @RequiredArgsConstructor
 public class JobExplorerJobConfiguration {
 
